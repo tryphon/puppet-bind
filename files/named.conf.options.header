@@ -1,0 +1,5 @@
+options {
+directory "/var/cache/bind";
+
+# Options defined into files/bind/named.conf.options :
+

@@ -1,0 +1,17 @@
+
+# End of options
+
+allow-query { "any"; };
+allow-recursion { "any"; };
+
+recursion yes;
+
+auth-nxdomain no;    # conform to RFC1035
+
+max-udp-size 512;
+};
+
+logging {
+category lame-servers {null; };
+category edns-disabled { null; };
+};

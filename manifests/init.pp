@@ -27,10 +27,27 @@ class bind {
     notify => Service[bind9]
   }
 
-  file { "/etc/bind/named.conf.options":
-    source => "puppet:///bind/named.conf.options",
-    require => Package[bind9],
+  concatenated_file { "/etc/bind/named.conf.options":
+    dir => "/etc/bind/named.conf.options.d",
+    header => "/etc/bind/named.conf.options.header",
+    footer => "/etc/bind/named.conf.options.footer",
+    require => [Package[bind9], File["/etc/bind/named.conf.options.header"], File["/etc/bind/named.conf.options.footer"]],
+    subscribe => [File["/etc/bind/named.conf.options.header"], File["/etc/bind/named.conf.options.footer"]],
     notify => Service[bind9]
+  }
+
+  file { "/etc/bind/named.conf.options.header":
+    source => "puppet:///bind/named.conf.options.header",
+    require => Package[bind9];
+
+    "/etc/bind/named.conf.options.footer":
+    source => "puppet:///bind/named.conf.options.footer",
+    require => Package[bind9]
+  }
+
+  concatenated_file_source { "named.conf.options":
+    source => "puppet:///files/bind/named.conf.options",
+    dir => "/etc/bind/named.conf.options.d"
   }
 
   define zone($zone_name = '') {
